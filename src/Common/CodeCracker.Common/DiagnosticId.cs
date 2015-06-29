@@ -47,6 +47,7 @@
         PropertyPrivateSet = 47,
         StringFormat = 48,
         SimplifyRedundantBooleanComparisons = 49,
+        ConvertNullable = 50,
         ReadonlyField = 52,
         JsonNet = 54,
         StringFormatArgs = 56,

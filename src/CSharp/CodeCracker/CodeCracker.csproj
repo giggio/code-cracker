@@ -73,6 +73,7 @@
     <Compile Include="Refactoring\ParameterRefactoryCodeFixProvider.cs" />
     <Compile Include="Reliability\UseConfigureAwaitFalseAnalyzer.cs" />
     <Compile Include="Reliability\UseConfigureAwaitFalseCodeFixProvider.cs" />
+    <Compile Include="Style\ConvertNullableAnalyzer.cs" />
     <Compile Include="Style\ConsoleWriteLineAnalyzer.cs" />
     <Compile Include="Style\ConsoleWriteLineCodeFixProvider.cs" />
     <Compile Include="Style\UseEmptyStringAnalyzer.cs" />
