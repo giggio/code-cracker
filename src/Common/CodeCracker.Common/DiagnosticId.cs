@@ -85,6 +85,7 @@
         ExtractClassToFile = 96,
         ChangeCountMethodToProperty = 98,
         PreferAnyToCountGreaterThanZero = 99,
+        ConvertInterfaceToAbstractClass = 102,
         NameOf_External = 108,
         InconsistentParameterDefaultValue = 110,
         StringFormatArgs_ExtraArgs = 111

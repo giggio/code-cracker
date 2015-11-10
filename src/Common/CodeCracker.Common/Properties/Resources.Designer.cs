@@ -161,6 +161,42 @@ namespace CodeCracker.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is a refactoring to convert an interface to an abstract class..
+        /// </summary>
+        public static string ConvertInterfaceToAbstractClassAnalyzer_Description {
+            get {
+                return ResourceManager.GetString("ConvertInterfaceToAbstractClassAnalyzer_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convert interface &apos;{0}&apos; to abstract class.
+        /// </summary>
+        public static string ConvertInterfaceToAbstractClassAnalyzer_MessageFormat {
+            get {
+                return ResourceManager.GetString("ConvertInterfaceToAbstractClassAnalyzer_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convert interface to abstract class.
+        /// </summary>
+        public static string ConvertInterfaceToAbstractClassAnalyzer_Title {
+            get {
+                return ResourceManager.GetString("ConvertInterfaceToAbstractClassAnalyzer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convert interface &apos;{0}&apos; to abstract class.
+        /// </summary>
+        public static string ConvertInterfaceToAbstractClassCodeFixProvider_Title {
+            get {
+                return ResourceManager.GetString("ConvertInterfaceToAbstractClassCodeFixProvider_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to none.
         /// </summary>
         public static string DefaultValue_None {

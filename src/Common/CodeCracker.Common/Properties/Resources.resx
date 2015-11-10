@@ -303,6 +303,18 @@
   <data name="DefaultValue_None" xml:space="preserve">
     <value>none</value>
   </data>
+  <data name="ConvertInterfaceToAbstractClassAnalyzer_Description" xml:space="preserve">
+    <value>This is a refactoring to convert an interface to an abstract class.</value>
+  </data>
+  <data name="ConvertInterfaceToAbstractClassAnalyzer_MessageFormat" xml:space="preserve">
+    <value>Convert interface '{0}' to abstract class</value>
+  </data>
+  <data name="ConvertInterfaceToAbstractClassAnalyzer_Title" xml:space="preserve">
+    <value>Convert interface to abstract class</value>
+  </data>
+  <data name="ConvertInterfaceToAbstractClassCodeFixProvider_Title" xml:space="preserve">
+    <value>Convert interface '{0}' to abstract class</value>
+  </data>
   <data name="EmptyCatchBlockAnalyzer_Description" xml:space="preserve">
     <value>An empty catch block suppress all errors and shouldn't be used.\r\nIf the error is expected consider logging it or changing the control flow such that it is explicit.</value>
   </data>

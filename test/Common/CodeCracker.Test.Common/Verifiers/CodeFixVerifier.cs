@@ -39,6 +39,7 @@ namespace CodeCracker.Test
         /// <param name="codeFixProvider">The codefix to be applied to the code wherever the relevant Diagnostic is found</param>
         /// <param name="languageVersionCSharp">C# language version used for compiling the test project, required unless you inform the VB language version.</param>
         /// <param name="diagnosticIndex">Index determining which analyzer diagnostic to use if there are multiple</param>
+        /// <param name="documentsCount">Count of expected documents found after applying the code action.</param>
         protected async Task VerifyCSharpFixAsync(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false, bool formatBeforeCompare = true, CodeFixProvider codeFixProvider = null, LanguageVersion languageVersionCSharp = LanguageVersion.CSharp6, int documentsCount = 1, int? diagnosticIndex = null)
         {
             if (formatBeforeCompare)
@@ -65,6 +66,7 @@ namespace CodeCracker.Test
         /// <param name="codeFixProvider">The codefix to be applied to the code wherever the relevant Diagnostic is found</param>
         /// <param name="languageVersionVB">The VB language version.</param>
         /// <param name="diagnosticIndex">Index determining which analyzer diagnostic to use if there are multiple</param>
+        /// <param name="documentsCount">Count of expected documents found after applying the code action.</param>
         protected async Task VerifyBasicFixAsync(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false, bool formatBeforeCompare = false, CodeFixProvider codeFixProvider = null, Microsoft.CodeAnalysis.VisualBasic.LanguageVersion languageVersionVB = Microsoft.CodeAnalysis.VisualBasic.LanguageVersion.VisualBasic14, int documentsCount = 1, int? diagnosticIndex = null)
         {
             if (formatBeforeCompare)
@@ -96,6 +98,7 @@ namespace CodeCracker.Test
         /// <param name="languageVersionCSharp">C# language version used for compiling the test project, required unless you inform the VB language version.</param>
         /// <param name="languageVersionVB">VB language version used for compiling the test project, required unless you inform the C# language version.</param>
         /// <param name="diagnosticIndex">Index determining which analyzer diagnostic to use if there are multiple</param>
+        /// <param name="documentsCount">Count of expected documents found after applying the code action.</param>
         private async static Task VerifyFixAsync(string language, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string oldSource, string newSource, int? codeFixIndex, bool allowNewCompilerDiagnostics, LanguageVersion languageVersionCSharp, Microsoft.CodeAnalysis.VisualBasic.LanguageVersion languageVersionVB, int documentsCount, int? diagnosticIndex)
         {
             var supportedDiagnostics = analyzer.SupportedDiagnostics.Select(d => d.Id);
