@@ -37,31 +37,34 @@ namespace CodeCracker.CSharp.Refactoring
             var interfaceSymbol = semanticModel.GetDeclaredSymbol(theInterface);
             var implementations = await SymbolFinder.FindImplementationsAsync(interfaceSymbol, context.Document.Project.Solution, cancellationToken: context.CancellationToken);
             if (implementations.Any(imp => ((INamedTypeSymbol)imp).BaseType.SpecialType != SpecialType.System_Object)) return;
-            context.RegisterCodeFix(CodeAction.Create(string.Format(Resources.ConvertInterfaceToAbstractClassCodeFixProvider_Title, interfaceSymbol.Name), async c =>
-                {
-                    var trackedInterface = theInterface.WithAdditionalAnnotations(annotation);
-                    var trackedRoot = root.ReplaceNode(theInterface, trackedInterface);
-                    var newSolution = document.Project.Solution.WithDocumentSyntaxRoot(document.Id, trackedRoot);
-                    //now add the override to the referencing docs:
-                    newSolution = await AddOverrideToReferencesAsync(newSolution, document.Id, c);
-                    //now change the interface to an abstract class:
-                    newSolution = await ChangeInterfaceToAbstractClassAsync(newSolution, document.Id, c);
-
-                    return newSolution;
-                }, nameof(ConvertInterfaceToAbstractClassCodeFixProvider)), diagnostic);
+            context.RegisterCodeFix(
+                CodeAction.Create(string.Format(Resources.ConvertInterfaceToAbstractClassCodeFixProvider_Title, interfaceSymbol.Name),
+                    c => ChangeInterfaceToAbstractClassAsync(document, root, theInterface, c),
+                    nameof(ConvertInterfaceToAbstractClassCodeFixProvider)),
+                diagnostic);
         }
 
-        private static async Task<Solution> AddOverrideToReferencesAsync(Solution newSolution, DocumentId documentId, CancellationToken c)
+        private static async Task<Solution> ChangeInterfaceToAbstractClassAsync(Document document, SyntaxNode root, InterfaceDeclarationSyntax theInterface, CancellationToken cancellationToken)
+        {
+            var trackedInterface = theInterface.WithAdditionalAnnotations(annotation);
+            var trackedRoot = root.ReplaceNode(theInterface, trackedInterface);
+            var newSolution = document.Project.Solution.WithDocumentSyntaxRoot(document.Id, trackedRoot);
+            newSolution = await AddOverrideToReferencesAsync(newSolution, document.Id, cancellationToken);
+            newSolution = await ChangeInterfaceToAbstractClassAsync(newSolution, document.Id, cancellationToken);
+            return newSolution;
+        }
+
+        private static async Task<Solution> AddOverrideToReferencesAsync(Solution newSolution, DocumentId documentId, CancellationToken cancellationToken)
         {
             var newDocument = newSolution.GetDocument(documentId);
-            var newRoot = await newDocument.GetSyntaxRootAsync(c).ConfigureAwait(false);
+            var newRoot = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var trackedInterface = (InterfaceDeclarationSyntax)newRoot.GetAnnotatedNodes(annotation).Single();
-            var newSemanticModel = await newDocument.GetSemanticModelAsync(c).ConfigureAwait(false);
+            var newSemanticModel = await newDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var newInterfaceSymbol = newSemanticModel.GetDeclaredSymbol(trackedInterface);
-            var implementationSymbols = await SymbolFinder.FindImplementationsAsync(newInterfaceSymbol, newSolution, cancellationToken: c);
+            var implementationSymbols = await SymbolFinder.FindImplementationsAsync(newInterfaceSymbol, newSolution, cancellationToken: cancellationToken);
             var docs = implementationSymbols.SelectMany(implementationSymbol => ((INamedTypeSymbol)implementationSymbol).GetMembers())
                     .SelectMany(implementationMember => implementationMember.DeclaringSyntaxReferences)
-                    .Select(syntaxRef => (MemberDeclarationSyntax)syntaxRef.GetSyntax(c))
+                    .Select(syntaxRef => (MemberDeclarationSyntax)syntaxRef.GetSyntax(cancellationToken))
                     .GroupBy(memberNode => newSolution.GetDocument(memberNode.SyntaxTree));
             var newDocs = new Dictionary<Document, SyntaxNode>();
             foreach (var doc in docs)
@@ -73,7 +76,7 @@ namespace CodeCracker.CSharp.Refactoring
                     var newMemberNode = memberNode.AddModifiers(overrideModifier);
                     membersToReplace.Add(memberNode, newMemberNode);
                 }
-                var refDocRoot = await referencedDocument.GetSyntaxRootAsync(c);
+                var refDocRoot = await referencedDocument.GetSyntaxRootAsync(cancellationToken);
                 var newRefDocRoot = refDocRoot.ReplaceNodes(membersToReplace.Keys, (memberNode, _) => membersToReplace[memberNode]);
                 newDocs.Add(referencedDocument, newRefDocRoot);
             }
@@ -82,15 +85,15 @@ namespace CodeCracker.CSharp.Refactoring
             return newSolution;
         }
 
-        private static async Task<Solution> ChangeInterfaceToAbstractClassAsync(Solution newSolution, DocumentId documentId, CancellationToken c)
+        private static async Task<Solution> ChangeInterfaceToAbstractClassAsync(Solution newSolution, DocumentId documentId, CancellationToken cancellationToken)
         {
             var newDocument = newSolution.GetDocument(documentId);
-            var newRoot = await newDocument.GetSyntaxRootAsync(c).ConfigureAwait(false);
+            var newRoot = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var trackedInterface = (InterfaceDeclarationSyntax)newRoot.GetAnnotatedNodes(annotation).Single();
             var newName = ChangeInterfaceNameToClassName(trackedInterface.Identifier.Text);
-            var newSemanticModel = await newDocument.GetSemanticModelAsync(c).ConfigureAwait(false);
+            var newSemanticModel = await newDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var newInterfaceSymbol = newSemanticModel.GetDeclaredSymbol(trackedInterface);
-            newSolution = await Renamer.RenameSymbolAsync(newSolution, newInterfaceSymbol, newName, newSolution.Workspace.Options, c);
+            newSolution = await Renamer.RenameSymbolAsync(newSolution, newInterfaceSymbol, newName, newSolution.Workspace.Options, cancellationToken);
             var members = from m in trackedInterface.Members
                           select m
                                   .WithoutTrivia()
@@ -103,7 +106,7 @@ namespace CodeCracker.CSharp.Refactoring
                 .WithAdditionalAnnotations(Formatter.Annotation)
                 .WithTriviaFrom(trackedInterface);
             newDocument = newSolution.GetDocument(documentId);
-            newRoot = await newDocument.GetSyntaxRootAsync(c).ConfigureAwait(false);
+            newRoot = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             trackedInterface = (InterfaceDeclarationSyntax)newRoot.GetAnnotatedNodes(annotation).Single();
             newRoot = newRoot.ReplaceNode(trackedInterface, newClass);
             newSolution = newSolution.WithDocumentSyntaxRoot(documentId, newRoot);
