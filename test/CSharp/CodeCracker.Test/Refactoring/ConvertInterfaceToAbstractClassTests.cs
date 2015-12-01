@@ -76,6 +76,24 @@ class FooImpl : Foo { }
         }
 
         [Fact]
+        public async Task ConvertInterfaceIfThereIsAnotherClassWithTheSameName()
+        {
+            var source = @"
+class Foo { }
+interface IFoo { }
+class FooImpl : Foo { }
+";
+            var fix = @"
+class Foo { }
+abstract class Foo1
+{
+}
+class FooImpl : Foo1 { }
+";
+            await VerifyCSharpFixAsync(source, fix);
+        }
+
+        [Fact]
         public async Task ConvertsInterfaceWithAMethod()
         {
             var source = @"
@@ -110,18 +128,5 @@ class FooImpl : Foo
 ";
             await VerifyCSharpFixAsync(source, fix);
         }
-
-        //[Theory]
-        //[InlineData(@"
-        //    var ints = new [] {1, 2};
-        //    ints.Any(i => true);")]
-        //[InlineData(@"
-        //    var ints = new [] {1, 2};
-        //    ints.All(i => true);")]
-        //public async Task ExpressionStatementsDoNotCreateDiagnostic(string code)
-        //{
-        //    var original = code.WrapInCSharpMethod(usings: "\nusing System.Linq;");
-        //    await VerifyCSharpHasNoDiagnosticsAsync(original);
-        //}
     }
 }
