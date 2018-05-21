@@ -9,7 +9,6 @@ using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeCracker.Properties;
 
 namespace CodeCracker.CSharp.Design
 {

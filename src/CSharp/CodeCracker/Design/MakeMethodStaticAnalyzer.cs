@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Linq;
 using System.Collections.Immutable;
-using System;
 
 namespace CodeCracker.CSharp.Design
 {

@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
-using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;

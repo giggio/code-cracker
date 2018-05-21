@@ -141,7 +141,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string RejectsEverythingProperty
             {
                 get { return null; } 
-                set { throw new ArgumentException(""message"", ""c""); } 
+                set { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
@@ -163,7 +163,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string RejectsEverythingProperty
             {
                 get { return null; } 
-                set { throw new ArgumentException(""message"", ""c""); } 
+                set { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
@@ -171,7 +171,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string RejectsEverythingProperty
             {
                 get { return null; } 
-                set { throw new ArgumentException(""message"", ""value""); } 
+                set { throw new ArgumentException(""message"", ""value""); }
             }
             ");
             await VerifyCSharpFixAsync(test, fixtest);
@@ -183,7 +183,7 @@ namespace CodeCracker.Test.CSharp.Usage
             var test = Wrap(@"
             public string this[int a, int b]
             {
-                get { throw new ArgumentException(""message"", ""c""); } 
+                get { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
@@ -204,14 +204,14 @@ namespace CodeCracker.Test.CSharp.Usage
             var test = Wrap(@"
             public string this[int a, int b]
             {
-                get { throw new ArgumentException(""message"", ""c""); } 
+                get { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
             var fixtest = Wrap(@"
             public string this[int a, int b]
             {
-                get { throw new ArgumentException(""message"", ""a""); } 
+                get { throw new ArgumentException(""message"", ""a""); }
             }
             ");
             await VerifyCSharpFixAsync(test, fixtest, 0);
@@ -259,7 +259,7 @@ namespace CodeCracker.Test.CSharp.Usage
             void Foo(string a)
             {
                 Action<int> action = param => { throw new ArgumentException(""message"", ""paramName""); };
-            } 
+            }
             ");
 
             var fixtest = Wrap(@"
@@ -268,7 +268,7 @@ namespace CodeCracker.Test.CSharp.Usage
             void Foo(string a)
             {
                 Action<int> action = param => { throw new ArgumentException(""message"", ""param""); };
-            } 
+            }
             ");
             await VerifyCSharpFixAsync(test, fixtest);
         }
@@ -279,14 +279,14 @@ namespace CodeCracker.Test.CSharp.Usage
             var test = Wrap(@"
             public string this[int a, int b]
             {
-                get { throw new ArgumentException(""message"", ""c""); } 
+                get { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
             var fixtest = Wrap(@"
             public string this[int a, int b]
             {
-                get { throw new ArgumentException(""message"", ""b""); } 
+                get { throw new ArgumentException(""message"", ""b""); }
             }
             ");
             await VerifyCSharpFixAsync(test, fixtest, 1);
@@ -299,7 +299,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string this[int a, int b]
             {
                 get { return null; }
-                set { throw new ArgumentException(""message"", ""c""); } 
+                set { throw new ArgumentException(""message"", ""c""); }
             }
             ");
 
@@ -307,7 +307,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string this[int a, int b]
             {
                 get { return null; }
-                set { throw new ArgumentException(""message"", ""value""); } 
+                set { throw new ArgumentException(""message"", ""value""); }
             }
             ");
             await VerifyCSharpFixAsync(test, fixtest, 2);
@@ -320,7 +320,7 @@ namespace CodeCracker.Test.CSharp.Usage
             public string this[int a, int b]
             {
                 get { return null; }
-                set { throw new ArgumentException(""message"", ""value""); } 
+                set { throw new ArgumentException(""message"", ""value""); }
             }
             ");
 

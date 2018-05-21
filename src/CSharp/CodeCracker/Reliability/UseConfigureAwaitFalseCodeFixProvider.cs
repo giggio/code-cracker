@@ -8,7 +8,6 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using System.Threading;
 using Microsoft.CodeAnalysis.Text;
 

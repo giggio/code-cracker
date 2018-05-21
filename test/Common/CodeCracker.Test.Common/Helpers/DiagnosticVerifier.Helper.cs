@@ -20,7 +20,15 @@ namespace CodeCracker.Test
     public abstract partial class DiagnosticVerifier
     {
         private static readonly MetadataReference CorlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
+        private static readonly MetadataReference ObjectModelReference = MetadataReference.CreateFromFile(typeof(System.ComponentModel.PropertyChangedEventArgs).Assembly.Location);
+        private static readonly MetadataReference SystemConsoleReference = MetadataReference.CreateFromFile(typeof(System.Console).Assembly.Location);
+        private static readonly MetadataReference SystemLinqQueryableReference = MetadataReference.CreateFromFile(typeof(System.Linq.Queryable).Assembly.Location);
+        private static readonly MetadataReference SystemLinqExpressionsReference = MetadataReference.CreateFromFile(typeof(System.Linq.IQueryable).Assembly.Location);
+        private static readonly MetadataReference SystemNetPrimitivesReference = MetadataReference.CreateFromFile(typeof(System.Net.IPAddress).Assembly.Location);
+        private static readonly MetadataReference SystemPrivateUriReference = MetadataReference.CreateFromFile(typeof(System.Uri).Assembly.Location);
+        private static readonly MetadataReference SystemPrivateCorLibReference = MetadataReference.CreateFromFile(typeof(System.Collections.IEnumerable).Assembly.Location);
+        private static readonly MetadataReference SystemRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Collections.Generic.ISet<>).Assembly.Location);
+        private static readonly MetadataReference SystemLinqReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
         private static readonly MetadataReference RegexReference = MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location);
         private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
         private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
@@ -96,8 +104,7 @@ namespace CodeCracker.Test
             if (exceptionAnalyzer != null) throw new Exception($"Analyzer threw. Details:\nMessage:{exceptionAnalyzer.GetMessage()}.");
         }
 
-        private static Diagnostic[] SortDiagnostics(List<Diagnostic> diagnostics) =>
-            diagnostics.OrderBy(d => d.Location.SourceTree.FilePath).ThenBy(d => d.Location.SourceSpan.Start).ToArray();
+        private static Diagnostic[] SortDiagnostics(IEnumerable<Diagnostic> diagnostics) => diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
 
         #region Set up compilation and documents
         /// <summary>
@@ -179,7 +186,10 @@ namespace CodeCracker.Test
                 TestProjectName, language,
                 parseOptions: parseOptions,
                 metadataReferences: ImmutableList.Create(
-                    CorlibReference, SystemCoreReference, RegexReference,
+                    CorlibReference, ObjectModelReference, SystemLinqQueryableReference,
+                    SystemLinqExpressionsReference, SystemNetPrimitivesReference, SystemPrivateUriReference,
+                    SystemConsoleReference, SystemPrivateCorLibReference,
+                    SystemLinqReference, RegexReference, SystemRuntimeReference,
                     CSharpSymbolsReference, CodeAnalysisReference, JsonNetReference));
 
             workspace.AddProject(projectInfo);

@@ -50,7 +50,7 @@ namespace CodeCracker.CSharp.Usage
             checker.AnalyzeMethod(method);
         }
 
-        private static readonly Lazy<Type> objectType = new Lazy<Type>(() => Type.GetType("System.Net.IPAddress, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
+        private static readonly Lazy<Type> objectType = new Lazy<Type>(() => typeof(System.Net.IPAddress));
 
         private static readonly Lazy<MethodInfo> parseMethodInfo =
             new Lazy<MethodInfo>(() => objectType.Value.GetRuntimeMethod("Parse", new[] { typeof(string) }));

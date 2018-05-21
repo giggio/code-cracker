@@ -22,11 +22,16 @@ namespace CodeCracker.CSharp.Usage
         public sealed override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var diagnostic = context.Diagnostics.First();
-            var parameters = diagnostic.Properties.Where(p => p.Key.StartsWith("param"));
+            var parameters = from p in diagnostic.Properties
+                              where p.Key.StartsWith("param|")
+                              let parts = p.Key.Split('|')
+                              let i = int.Parse(parts[1])
+                              orderby i
+                              select p.Value;
             foreach (var param in parameters)
             {
-                var message = "Use '" + param.Value + "'";
-                context.RegisterCodeFix(CodeAction.Create(message, c => FixParamAsync(context.Document, diagnostic, param.Value, c), nameof(ArgumentExceptionCodeFixProvider)), diagnostic);
+                var message = "Use '" + param + "'";
+                context.RegisterCodeFix(CodeAction.Create(message, c => FixParamAsync(context.Document, diagnostic, param, c), $"{nameof(ArgumentExceptionCodeFixProvider)}param"), diagnostic);
             }
             return Task.FromResult(0);
         }

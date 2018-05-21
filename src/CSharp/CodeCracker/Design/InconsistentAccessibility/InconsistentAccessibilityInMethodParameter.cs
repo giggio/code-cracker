@@ -1,14 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using CodeCracker.Properties;
 
 namespace CodeCracker.CSharp.Design.InconsistentAccessibility
 {

@@ -1,5 +1,4 @@
 using CodeCracker.FixAllProviders;
-using CodeCracker.Properties;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;

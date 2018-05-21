@@ -52,10 +52,9 @@ namespace CodeCracker.CSharp.Usage
 
             var paramName = paramNameOpt.Value as string;
 
-            IList<string> parameters;
-            if (IsParamNameCompatibleWithCreatingContext(objectCreationExpression, paramName, out parameters)) return;
-            var props = parameters.ToImmutableDictionary(p => $"param{p}", p => p);
-            var diagnostic = Diagnostic.Create(Rule, paramNameLiteral.GetLocation(), props.ToImmutableDictionary(), paramName);
+            if (IsParamNameCompatibleWithCreatingContext(objectCreationExpression, paramName, out var parameters)) return;
+            var props = parameters.Select((p, i) => (i, p)).ToImmutableDictionary(t => $"param|{t.i}", t => t.p);
+            var diagnostic = Diagnostic.Create(Rule, paramNameLiteral.GetLocation(), props, paramName);
             context.ReportDiagnostic(diagnostic);
         }
 

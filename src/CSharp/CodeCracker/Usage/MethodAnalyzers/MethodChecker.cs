@@ -84,10 +84,8 @@ namespace CodeCracker.CSharp.Usage.MethodAnalyzers
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null)
-                {
+                if (ex.InnerException != null)
                     ex = ex.InnerException;
-                }
                 var diag = Diagnostic.Create(diagnosticDescriptor, argumentList.Arguments[methodInformation.ArgumentIndex].GetLocation(), ex.Message);
                 context.ReportDiagnostic(diag);
             }

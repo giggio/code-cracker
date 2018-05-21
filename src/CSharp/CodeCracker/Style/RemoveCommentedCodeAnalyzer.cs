@@ -67,20 +67,17 @@ namespace CodeCracker.CSharp.Style
             // class?
             if (diagnostics.Length == 2)
             {
-                // missing {
-                if (!diagnostics[0].Id.Equals("CS1514")) return false;
-                // missing }
-                if (!diagnostics[1].Id.Equals("CS1513")) return false;
-                return true;
+                // CS1514: missing {
+                // CS1513: missing }
+                if (diagnostics[0].Id.Equals("CS1514") && diagnostics[1].Id.Equals("CS1513"))
+                    return true;
+                // CS1733: missing statement
+                // CS1002: ; expected
+                if (diagnostics[0].Id.Equals("CS1733") && diagnostics[1].Id.Equals("CS1002"))
+                    return true;
+                return false;
             }
 
-            // if / while
-            else if (diagnostics.Length == 1)
-            {
-                // missing statement
-                if (!diagnostics[0].Id.Equals("CS1733")) return false;
-                return true;
-            }
 
             if (diagnostics.Length != 0) return false;
 
@@ -108,7 +105,7 @@ namespace CodeCracker.CSharp.Style
                 current = root.FindTrivia(whitespace.GetLocation().SourceSpan.End + 1);
                 if (!current.IsKind(SyntaxKind.SingleLineCommentTrivia)) break;
 
-                numberOfComments ++;
+                numberOfComments++;
 
             } while (true);
             return new GetFullCommentedCodeResult(result.ToString(), numberOfComments, start, end);
@@ -117,7 +114,7 @@ namespace CodeCracker.CSharp.Style
         internal class GetFullCommentedCodeResult
         {
             public string Code { get; }
-            public int NumberOfComments{ get; }
+            public int NumberOfComments { get; }
             public int Start { get; }
             public int End { get; }
 
