@@ -5,6 +5,7 @@ Imports Microsoft.CodeAnalysis.CodeActions
 Imports Microsoft.CodeAnalysis.CodeFixes
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports System.Linq
 
 Namespace Usage
 
@@ -21,10 +22,15 @@ Namespace Usage
         Public Overrides Function RegisterCodeFixesAsync(context As CodeFixContext) As Task
             Dim diagnostic = context.Diagnostics.First()
 
-            Dim parameters = diagnostic.Properties.Where(Function(p) p.Key.StartsWith("param"))
+            Dim parameters = From p In diagnostic.Properties
+                             Where p.Key.StartsWith("param|")
+                             Let parts = p.Key.Split("|"c)
+                             Let i = Integer.Parse(parts(1))
+                             Order By i
+                             Select p.Value
             For Each param In parameters
                 Dim message = $"Use '{param}'"
-                context.RegisterCodeFix(CodeAction.Create(message, Function(c) FixParamAsync(context.Document, diagnostic, param.Value, c), NameOf(ArgumentExceptionCodeFixProvider)), diagnostic)
+                context.RegisterCodeFix(CodeAction.Create(message, Function(c) FixParamAsync(context.Document, diagnostic, param, c), NameOf(ArgumentExceptionCodeFixProvider)), diagnostic)
             Next
             Return Task.FromResult(0)
         End Function

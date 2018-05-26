@@ -53,8 +53,8 @@ It can be either specified directly or using nameof() (VB 14 and above only)."
 
             Dim parameters As IEnumerable(Of String) = Nothing
             If IsParamNameCompatibleWithCreatingContext(objectCreationExpression, paramName, parameters) Then Exit Sub
-            Dim props = parameters.ToImmutableDictionary(Function(p) $"param{p}", Function(p) p)
-            Dim diag = Diagnostic.Create(Rule, paramNameLiteral.GetLocation, props.ToImmutableDictionary(), paramName)
+            Dim props = parameters.Select(Function(p, i) (i, p)).ToImmutableDictionary(Function(t) $"param|{t.i}", Function(t) t.p)
+            Dim diag = Diagnostic.Create(Rule, paramNameLiteral.GetLocation, props, paramName)
             context.ReportDiagnostic(diag)
         End Sub
 

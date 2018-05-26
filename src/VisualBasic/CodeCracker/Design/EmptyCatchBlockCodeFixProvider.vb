@@ -6,16 +6,15 @@ Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports System.Collections.Immutable
 Imports System.Threading
-Imports CCProp = CodeCracker.Properties
 
 Namespace Design
     <ExportCodeFixProvider(LanguageNames.VisualBasic, Name:=NameOf(EmptyCatchBlockCodeFixProvider)), Composition.Shared>
     Public Class EmptyCatchBlockCodeFixProvider
         Inherits CodeFixProvider
 
-        Friend Shared ReadOnly FixRemoveEmptyCatchBlock As New LocalizableResourceString(NameOf(CCProp.Resources.EmptyCatchBlockCodeFixProvider_Remove), CCProp.Resources.ResourceManager, GetType(CCProp.Resources))
-        Friend Shared ReadOnly FixInsertExceptionClass As New LocalizableResourceString(NameOf(CCProp.Resources.EmptyCatchBlockCodeFixProvider_InsertException), CCProp.Resources.ResourceManager, GetType(CCProp.Resources))
-        Friend Shared ReadOnly FixRemoveTry As New LocalizableResourceString(NameOf(CCProp.Resources.EmptyCatchBlockCodeFixProvider_RemoveTry), CCProp.Resources.ResourceManager, GetType(CCProp.Resources))
+        Friend Shared ReadOnly FixRemoveEmptyCatchBlock As New LocalizableResourceString(NameOf(Resources.EmptyCatchBlockCodeFixProvider_Remove), Resources.ResourceManager, GetType(Resources))
+        Friend Shared ReadOnly FixInsertExceptionClass As New LocalizableResourceString(NameOf(Resources.EmptyCatchBlockCodeFixProvider_InsertException), Resources.ResourceManager, GetType(Resources))
+        Friend Shared ReadOnly FixRemoveTry As New LocalizableResourceString(NameOf(Resources.EmptyCatchBlockCodeFixProvider_RemoveTry), Resources.ResourceManager, GetType(Resources))
 
         Public NotOverridable Overrides ReadOnly Property FixableDiagnosticIds As ImmutableArray(Of String) = ImmutableArray.Create(DiagnosticId.EmptyCatchBlock.ToDiagnosticId())
 

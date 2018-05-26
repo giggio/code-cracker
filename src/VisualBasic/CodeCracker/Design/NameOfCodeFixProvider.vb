@@ -1,5 +1,4 @@
-﻿Imports CodeCracker.Properties
-Imports System.Collections.Immutable
+﻿Imports System.Collections.Immutable
 Imports System.Threading
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.CodeActions
