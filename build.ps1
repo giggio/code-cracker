@@ -64,6 +64,13 @@ function Import-ILMerge {
         . "$script:nugetExe" restore $PSScriptRoot\.nuget\packages.config -SolutionDirectory $PSScriptRoot
     }
 }
+function Import-Pdb2Pdb {
+    $pdb2pdb = "$PSScriptRoot\packages\pdb2pdb.1.1.0-beta1-62810-01\tools\Pdb2Pdb.exe"
+    if ((Test-Path $pdb2pdb) -ne $true) {
+        Write-Host "Restoring pdb2pdb with $script:nugetExe"
+        . "$script:nugetExe" install Pdb2Pdb -Version 1.1.0-beta1-62810-01 -Source https://dotnet.myget.org/F/symreader-converter/api/v3/index.json -OutputDirectory "$PSScriptRoot\packages\"
+    }
+}
 
 # statements:
 
@@ -72,6 +79,7 @@ $nugetExe = ""
 Get-Nuget
 Import-Psake
 Import-ILMerge
+Import-Pdb2Pdb
 if ($MyInvocation.UnboundArguments.Count -ne 0) {
     Invoke-Expression("Invoke-psake -framework '4.6' $PSScriptRoot\psakefile.ps1 -taskList " + $MyInvocation.UnboundArguments -join " ")
 }

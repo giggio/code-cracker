@@ -14,7 +14,6 @@
     <RootNamespace>CodeCracker</RootNamespace>
     <Product>CodeCracker</Product>
     <Copyright>Copyright © 2014-2018</Copyright>
-    <Version>1.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" PrivateAssets="all" />
@@ -22,8 +21,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-    <EmbeddedResource Update="Resources.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Resources.fr.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.fr.resx" />
-    <EmbeddedResource Update="Resources.fr.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.fr.Designer.cs" />
+    <EmbeddedResource Update="**\*.resx" Generator="ResXFileCodeGenerator" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CodeCracker.CSharp</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CodeCracker.VisualBasic</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CodeCracker.Test.CSharp</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CodeCracker.Test.VisualBasic</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 </Project>

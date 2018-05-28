@@ -1,6 +1,7 @@
 <Project>
-    <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
-    </PropertyGroup>
+  <PropertyGroup>
+    <VersionPrefix>1.2.0</VersionPrefix>
+    <LangVersion>latest</LangVersion>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+  </PropertyGroup>
 </Project>

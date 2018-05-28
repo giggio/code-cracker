@@ -2,15 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>CodeCracker.CSharp</AssemblyName>
     <RootNamespace>CodeCracker.CSharp</RootNamespace>
     <WarningsNotAsErrors>AD0001</WarningsNotAsErrors>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <CodeAnalysisRuleSet>..\..\..\codecrackerandall.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
     <PackageId>codecracker.CSharp</PackageId>
     <Authors>giggio,elemarjr,carloscds</Authors>
     <PackageLicenseUrl>https://github.com/code-cracker/code-cracker/blob/master/LICENSE.txt</PackageLicenseUrl>
@@ -27,17 +25,26 @@ This is a community project, free and open source. Everyone is invited to contri
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <Product>CodeCracker</Product>
     <Copyright>Copyright © 2014-2018</Copyright>
-    <Version>1.2.0</Version>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CodeCracker.Common\CodeCracker.Common.csproj" />
+    <ProjectReference Include="..\..\Common\CodeCracker.Common\CodeCracker.Common.csproj" PrivateAssets="all" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>CodeCracker.Test.CSharp</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <Target Name="GetInputDlls" DependsOnTargets="Build">
+    <Message Importance="high" Text="Dlls are: '@(ReferencePathWithRefAssemblies)'" />
+  </Target>
 </Project>
